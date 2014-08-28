@@ -57,6 +57,10 @@ thead {
 	width: 25px
 }
 
+.firdTd {
+/*	width: 100% */
+}
+
 td { 
     padding: 5px;
     border: 1px solid #ddd;
@@ -65,3 +69,18 @@ td {
 tr { 
     height: 30px;
    }
+/*
+ tbody tr:hover {
+    background-color: aliceblue;
+   }
+*/
+.click{
+	/*border: 1px solid #bbbbbb;*/
+	background: #cee6fa;
+}
+
+checkedBox {
+	background: #bbbbbb;
+}
+
+

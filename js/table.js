@@ -12,7 +12,7 @@ function Table (options) {
 	this._createTable();
 	this._createThead();
 	this._createTbody();
-	return this.tab
+	return this
 }
 
 Table.prototype.defaultOptions = {
@@ -71,6 +71,7 @@ Table.prototype._createTbody = function () {
 	var columns = this.columns;
 	data.forEach(function (obj) {
 		var trBody = tBody.insertRow(-1);
+		trBody.onclick = function (event) { self._clickTr(trBody, event) }//
 		for (var key in columns) {
 			var tdBody = trBody.insertCell(-1);
 			if (key == 'checkbox'){
@@ -84,6 +85,22 @@ Table.prototype._createTbody = function () {
 		trBody.childNodes[2].className = 'firdTd';
 	});
 }
+
+Table.prototype._clickTr = function (tr, event) {
+	event.type == 'keydown' ? event.preventDefault() : null;
+	console.dir(event)
+	var tBody = this.tBody;
+	for ( key in tBody.childNodes ) {
+		var elem = tBody.childNodes[key];
+		elem.className == 'click' ? elem.className = '' : null;
+	};
+	tr.className = 'click';
+	var checkbox = tr.getElementsByTagName('input').box
+	if (event.target.type !== 'checkbox') {
+		checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
+	}
+}
+
 
 Table.prototype._createText = function (teg, val) {
 	var text = document.createTextNode(val);
@@ -110,6 +127,7 @@ Table.prototype._allBox = function () {
 		arrayBox[i].checked = val;
 	} 
 }
+
 
 Table.prototype._clickSort = function (tdHead) {
 	var tBody = this.tBody;

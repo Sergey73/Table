@@ -1,7 +1,7 @@
 window.onload = function () {
     var fragment = document.createDocumentFragment();
     var div = document.createElement('div');
-    var div2 = document.createElement('div');
+    var div2 = document.createElement( 'div');
     var form = document.createElement('form');
     var input = document.createElement('input');
     var button1 = document.createElement('button');
@@ -38,28 +38,37 @@ window.onload = function () {
     div3.id = 'list';
    
     button1.onclick = function () { search() }
+    button1.title = 'Ctrl+1';
     button2.onclick = function () { addList() }
+    button2.title = 'Ctrl+2';
     button3.onclick = function () { delSelected() }
+    button3.title = 'Del';
     button4.onclick = function () { removeAll() }
-    
+    button4.title = 'Ctrl+3';
+		
     document.body.appendChild(fragment); 
-    
-    var removeAll = function () {
+   
+    var table;
+    var removeAll = function (event) {
+		event ? event.preventDefault() : null;
 		localStorage.removeItem(store.key);
+		location.reload();
 	}
     
-    var addList = function () {
+    var addList = function (event) {
+		event ? event.preventDefault() : null;
         if (input.value == '') {
             alert('Поле не заполнено!');
         } else {
             store.put({ name: input.value });
-            new Table({ data: store.data });
+            table = new Table({ data: store.data });
         }
         input.value = '';
         return false
     }
     
-    var delSelected = function () {
+    var delSelected = function (event) {
+		event ? event.preventDefault() : null;
         var arrayBox = document.getElementsByName('box');
         var count = arrayBox.length - 1;
         for (i = count; i > 0; i--) {	
@@ -67,15 +76,16 @@ window.onload = function () {
                 var valBox = arrayBox[i].value;
                 store.remove(valBox);
                 var tr = arrayBox[i].parentNode.parentNode.sectionRowIndex;
-                document.getElementsByTagName('table') [0].tBodies[0].deleteRow(tr);
+                document.getElementsByTagName('table')[0].tBodies[0].deleteRow(tr);
             }
         }
     }
     
-    var search = function () {
+    function search (event) {
+		event ? event.preventDefault() : null;
         var valTxt = input.value;
         var arraySearch = store.search(valTxt);
-        new Table({ data: arraySearch });		
+        table = new Table({ data: arraySearch });		
         
     }
     
@@ -83,7 +93,53 @@ window.onload = function () {
     if (localStorage[store.key]) {
 		store.add();
 	} else {
-		myData.forEach(function (obj) {store.put(obj)});
+		myData.forEach( function (obj) { store.put(obj) });
 	}
-    new Table({ data: store.data });
+	
+    table = new Table({ data: store.data });
+    
+	document.onkeydown = function (event) {
+		console.dir(event.keyCode);
+		var el = div3.getElementsByClassName('click')[0];
+		var code = event.keyCode;
+		var cKey = event.ctrlKey;
+		console.dir(table)
+		code == 40 ? el ? key( el.nextSibling ) : null : null;	// down
+		code == 38 ? el ? key( el.previousSibling ) : null : null;	// up
+		code == 32 ? el ? table._clickTr(el, event): null : null;	// space
+		code == 46 ? delSelected(event) : null;	// del
+		cKey && code == 49 ? search(event) : null;	// ctrl + 1
+		cKey && code == 50 ? addList(event) : null;	// ctrl + 2
+		cKey && code == 51 ? removeAll(event) : null;	// ctrl + 3
+		cKey && code == 65 ? allBox(event) : null;	// ctrl + A
+		
+		
+		function allBox (event) {
+			event.preventDefault();
+			var arrayBox = document.getElementsByName('box');
+			for (i = 0; i < arrayBox.length; i++) {
+				arrayBox[i].checked = true;
+			} 
+		}
+		
+		function key( nextOrPrevious ) {
+		event.preventDefault();
+		var bound = div3.getBoundingClientRect();
+			if ( nextOrPrevious !== null ) {
+				el.className = '';
+				el = nextOrPrevious;
+				el.className = 'click';
+				var boundElem = el.getBoundingClientRect();
+				if ( event.keyCode == 40 ) {
+					boundElem.bottom > bound.bottom ? div3.scrollTop += 30 : null;
+				} else if ( event.keyCode == 38 ) {
+					boundElem.top < bound.top ? div3.scrollTop -= 30 : null;
+				}
+			}
+		}
+	} 	
 }
+
+
+
+

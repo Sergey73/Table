@@ -4,11 +4,11 @@ function Store (options) {
 		if (options && options[option]!==undefined) {			
 			this[option] = options[option];						
 		} else {												
-			this[option] = defaultOptions[option]				
+			this[option] = defaultOptions[option];				
 		}
 	}
-	console.dir(this)
 }
+
 Store.prototype.defaultOptions = {
 	data: [],
 	key: 'my_table'
