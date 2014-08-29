@@ -104,7 +104,7 @@ window.onload = function () {
 		var cKey = event.ctrlKey;
 		code == 40 ? el ? key( el.nextSibling ) : null : null;	// down
 		code == 38 ? el ? key( el.previousSibling ) : null : null;	// up
-		code == 32 ? el ? table._clickTr(el, event): null : null;	// space
+		code == 13 ? el ? table._clickTr(el, event): null : null;	// Enter
 		code == 46 ? delSelected(event) : null;	// del
 		cKey && code == 49 ? search(event) : null;	// ctrl + 1
 		cKey && code == 50 ? addList(event) : null;	// ctrl + 2

@@ -93,13 +93,11 @@ Table.prototype._clickTr = function (tr, event) {
 		elem.className == 'click' ? elem.className = '' : null;
 	};
 	tr.className = 'click';
-	
 	var checkbox = tr.getElementsByTagName('input').box;
 	if ( event.type == 'keydown' || event.target.type !== 'checkbox') { 
 		event.preventDefault();
 		checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
 	}
-	
 }
 
 
