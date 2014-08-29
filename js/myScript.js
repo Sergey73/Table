@@ -99,11 +99,9 @@ window.onload = function () {
     table = new Table({ data: store.data });
     
 	document.onkeydown = function (event) {
-		console.dir(event.keyCode);
 		var el = div3.getElementsByClassName('click')[0];
 		var code = event.keyCode;
 		var cKey = event.ctrlKey;
-		console.dir(table)
 		code == 40 ? el ? key( el.nextSibling ) : null : null;	// down
 		code == 38 ? el ? key( el.previousSibling ) : null : null;	// up
 		code == 32 ? el ? table._clickTr(el, event): null : null;	// space

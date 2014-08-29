@@ -88,7 +88,6 @@ Table.prototype._createTbody = function () {
 
 Table.prototype._clickTr = function (tr, event) {
 	event.type == 'keydown' ? event.preventDefault() : null;
-	console.dir(event)
 	var tBody = this.tBody;
 	for ( key in tBody.childNodes ) {
 		var elem = tBody.childNodes[key];
