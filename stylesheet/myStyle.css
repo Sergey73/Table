@@ -69,13 +69,8 @@ td {
 tr { 
     height: 30px;
    }
-/*
- tbody tr:hover {
-    background-color: aliceblue;
-   }
-*/
+
 .click{
-	/*border: 1px solid #bbbbbb;*/
 	background: #cee6fa;
 }
 

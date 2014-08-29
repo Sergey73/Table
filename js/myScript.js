@@ -111,7 +111,6 @@ window.onload = function () {
 		cKey && code == 51 ? removeAll(event) : null;	// ctrl + 3
 		cKey && code == 65 ? allBox(event) : null;	// ctrl + A
 		
-		
 		function allBox (event) {
 			event.preventDefault();
 			var arrayBox = document.getElementsByName('box');

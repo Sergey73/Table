@@ -87,17 +87,19 @@ Table.prototype._createTbody = function () {
 }
 
 Table.prototype._clickTr = function (tr, event) {
-	event.type == 'keydown' ? event.preventDefault() : null;
 	var tBody = this.tBody;
 	for ( key in tBody.childNodes ) {
 		var elem = tBody.childNodes[key];
 		elem.className == 'click' ? elem.className = '' : null;
 	};
 	tr.className = 'click';
-	var checkbox = tr.getElementsByTagName('input').box
-	if (event.target.type !== 'checkbox') {
+	
+	var checkbox = tr.getElementsByTagName('input').box;
+	if ( event.type == 'keydown' || event.target.type !== 'checkbox') { 
+		event.preventDefault();
 		checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
 	}
+	
 }
 
 
@@ -111,7 +113,7 @@ Table.prototype._createChek = function (td, val) {
 	td.appendChild(box);
 	box.type = 'checkbox';
 	box.name = 'box';	
-	val ? box.value = val : null;			
+	val ? box.value = val : null;		
 	box.onclick = function () {
 		var head = document.getElementById('headBox');
 		head.checked = false;
