@@ -47,7 +47,7 @@ thead {
 	background:#D2E0EB;
 	position: fixed;
 	width: 90%;
-	top: 40px;
+	top: 39px;
 }
 
 .firstTd {
@@ -61,14 +61,14 @@ thead {
 thead .firdTd {
 	width: 100%;
 }
-
 thead .secondTd {
 	padding-right: 9px;
 }
 
 td { 
     padding: 5px;
-    border: 1px solid #ddd;
+   /* border: 1px solid #ddd; */
+   border: 1px solid #000; 
    }
    
 tr { 

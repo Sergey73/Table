@@ -48,7 +48,7 @@ window.onload = function () {
 		
     document.body.appendChild(fragment); 
    
-    var table;
+    var table, checkbox;
     var removeAll = function (event) {
 		event ? event.preventDefault() : null;
 		localStorage.removeItem(store.key);
@@ -61,13 +61,14 @@ window.onload = function () {
             alert('Поле не заполнено!');
         } else {
             store.put({ name: input.value });
-            table = new Table({ data: store.data });
+            table.newDate(store.data);
         }
         input.value = '';
         return false
     }
     
     var delSelected = function (event) {
+		console.time('test');
 		event ? event.preventDefault() : null;
         var arrayBox = document.getElementsByName('box');
         var count = arrayBox.length - 1;
@@ -79,13 +80,15 @@ window.onload = function () {
                 document.getElementsByTagName('table')[0].tBodies[0].deleteRow(tr);
             }
         }
+        console.timeEnd('test');
     }
     
     function search (event) {
 		event ? event.preventDefault() : null;
         var valTxt = input.value;
         var arraySearch = store.search(valTxt);
-        table = new Table({ data: arraySearch });		
+        console.dir(arraySearch);
+        table.newDate(arraySearch);	
         
     }
     
@@ -95,6 +98,7 @@ window.onload = function () {
 	} else {
 		myData.forEach( function (obj) { store.put(obj) });
 	}
+	
 	
     table = new Table({ data: store.data });
     
@@ -109,15 +113,8 @@ window.onload = function () {
 		cKey && code == 49 ? search(event) : null;	// ctrl + 1
 		cKey && code == 50 ? addList(event) : null;	// ctrl + 2
 		cKey && code == 51 ? removeAll(event) : null;	// ctrl + 3
-		cKey && code == 65 ? allBox(event) : null;	// ctrl + A
-		
-		function allBox (event) {
-			event.preventDefault();
-			var arrayBox = document.getElementsByName('box');
-			for (i = 0; i < arrayBox.length; i++) {
-				arrayBox[i].checked = true;
-			} 
-		}
+		//cKey && code == 65 ? table.allBox(event) : null;	// ctrl + A
+		cKey && code == 65 ? check.allBox(event) : null;	// ctrl + A
 		
 		function key( nextOrPrevious ) {
 		event.preventDefault();
@@ -128,13 +125,28 @@ window.onload = function () {
 				el.className = 'click';
 				var boundElem = el.getBoundingClientRect();
 				if ( event.keyCode == 40 ) {
+					// опускать на высоту предидущего столбца
 					boundElem.bottom > bound.bottom ? div3.scrollTop += 30 : null;
 				} else if ( event.keyCode == 38 ) {
 					boundElem.top < bound.top ? div3.scrollTop -= 30 : null;
 				}
-			}
+			}// else {table.createTbody(store.data)}
 		}
 	} 	
+	div3.onscroll = function () {
+		alert(111)
+		/*console.dir(div3)
+		console.dir(div3.scrollHeight)
+		console.dir(div3.scrollTop)*/
+		var scrollTop = div3.scrollTop;
+		var hDiv = div3.offsetHeight;
+		var hScroll = div3.scrollHeight;
+		var h = hScroll - hDiv;
+		console.dir(h);
+		if (scrollTop > h) {
+			table.createTbody();
+		} 
+	}
 }
 
 

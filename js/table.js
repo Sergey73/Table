@@ -1,22 +1,30 @@
+/*
+function F () {};
+F.prototype = Store.prototype;
+Table.prototype = new F();
+*/
+var check = new Checkbox();
 function Table (options) {
 	var defaultOptions = this.defaultOptions;
 	for (var option in defaultOptions) {
-		
-		if (options && options[option]!==undefined) {			
-			this[option] = options[option];						
+		if (options && options[option] !==undefined) {	
+				this[option] = options[option];					
 		} else {												
 			this[option] = defaultOptions[option]				
 		}
 	}
+	
 	this.flag = 0;
 	this._createTable();
 	this._createThead();
-	this._createTbody();
+	this.createTbody();
 	return this
 }
 
+
+
 Table.prototype.defaultOptions = {
-	data: {},
+	data: [],
 	container: "list",
 	columns: {
 		checkbox: {},
@@ -51,9 +59,11 @@ Table.prototype._createThead = function () {
 		var tdHead = trHead.insertCell(-1);
 			tdHead.onclick = function () { self._clickSort(this) };
 		if (key == 'checkbox') {
-			var input = this._createChek(tdHead);
+		//	var input = this.createChek(tdHead);
+			var input = check.createChek(tdHead);
 			input.id = 'headBox';
-			input.onclick = this._allBox;
+			//input.onclick = function () { self.allBox() }
+			input.onclick = function () { check.allBox() }
 		} else {
 			var label = valCol.label !== undefined ? valCol['label'] : key;
 			this._createText(tdHead, label);
@@ -61,29 +71,39 @@ Table.prototype._createThead = function () {
 	}
 	trHead.childNodes[0].className = 'firstTd';
 	trHead.childNodes[1].className = 'secondTd';
-	trHead.childNodes[2].className = 'firdTd';
+	trHead.childNodes[2].className = 'firdTd'; 
 }
 
-Table.prototype._createTbody = function () {
+Table.prototype.createTbody = function () {
 	var self = this;
 	var tBody = this.tBody;
-	var data = this.data;
+	//tBody.innerHTML = '';
+  	var data = this.data;
+	console.dir(data)
 	var columns = this.columns;
 	data.forEach(function (obj) {
 		var trBody = tBody.insertRow(-1);
-		trBody.onclick = function (event) { self._clickTr(trBody, event) }//
+		trBody.onclick = function (event) { self._clickTr(trBody, event) }
 		for (var key in columns) {
 			var tdBody = trBody.insertCell(-1);
 			if (key == 'checkbox'){
-				self._createChek(tdBody, obj['id']);
+				//self.createChek(tdBody, obj['id']);
+				check.createChek(tdBody, obj['id']);
 			} else {
 				self._createText(tdBody, obj[key]);
 			} 
 		}
 		trBody.childNodes[0].className = 'firstTd';
 		trBody.childNodes[1].className = 'secondTd';
-		trBody.childNodes[2].className = 'firdTd';
+		trBody.childNodes[2].className = 'firdTd'; 
 	});
+}
+
+Table.prototype.newDate = function (ndata) {
+	var tBody = this.tBody;
+	tBody.innerHTML = '';
+	this.data = ndata
+	this.createTbody();
 }
 
 Table.prototype._clickTr = function (tr, event) {
@@ -100,40 +120,32 @@ Table.prototype._clickTr = function (tr, event) {
 	}
 }
 
-
 Table.prototype._createText = function (teg, val) {
 	var text = document.createTextNode(val);
 	teg.appendChild(text);
 }
 
-Table.prototype._createChek = function (td, val) {
-	var box = document.createElement('input');
-	td.appendChild(box);
-	box.type = 'checkbox';
-	box.name = 'box';	
-	val ? box.value = val : null;		
-	box.onclick = function () {
-		var head = document.getElementById('headBox');
-		head.checked = false;
-	}
-	return box		
+/*
+Table.prototype.addRow = function (tr,) {
+// добавить в начало или конец
+* }
+Table.prototype.dellRow = function () {
+// удалить из начала или конца 
 }
+* 
 
-Table.prototype._allBox = function () {
-	var arrayBox = document.getElementsByName('box');
-	for (i = 1; i < arrayBox.length; i++) {
-		var val = this.checked == true ? true : false;
-		arrayBox[i].checked = val;
-	} 
+Table.prototype.sort = function () {
+// показывать только те данные, которые удовлетворяют условиям
 }
-
+*/
 
 Table.prototype._clickSort = function (tdHead) {
 	var tBody = this.tBody;
 	var sortCell = tdHead.cellIndex;		
 	var array = [];
 	var rows = tBody.rows;
-	if (sortCell !== 0) { 	
+	var element = tdHead.childNodes[0].type;
+	if (element !== 'checkbox') { 	
 		for (i=0; i < rows.length; i++) {
 			var sortTd =rows[i].cells[sortCell];
 			var str = sortTd.innerHTML;
