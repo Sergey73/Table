@@ -20,7 +20,6 @@ function Table (options) {
 	
 	var str = navigator.userAgent.toLowerCase();
     var valReg = /firefox/.exec(str)
-     
     if (valReg !== null) {
 		this.tHead.childNodes[0].childNodes[1].className = 'mozTheadSecondTd';
 		this.tBody.className = 'mozTbody'
@@ -122,6 +121,7 @@ Table.prototype._clickTr = function (tr, event) {
 		event.preventDefault();
 		checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
 	}
+	this.onOffHeadBox();
 }
 
 Table.prototype._createText = function (teg, val) {
@@ -130,25 +130,29 @@ Table.prototype._createText = function (teg, val) {
 }
 
 Table.prototype._clickSort = function (tdHead) {
-	var tBody = this.tBody;
-	var sortCell = tdHead.cellIndex;		
+	var sortCell = tdHead.cellIndex;
+	var sortBy;
 	var array = [];
-	var rows = tBody.rows;
-	var element = tdHead.childNodes[0].type;
-	if (element !== 'checkbox') { 	
-		for (i=0; i < rows.length; i++) {
-			var sortTd =rows[i].cells[sortCell];
-			var str = sortTd.innerHTML;
-			var ar = [str, rows[i]];
+	var count=0;
+	
+	for (key in this.columns) {
+		sortCell == count ? sortBy = key : null;
+		count++
+	}
+	if (sortBy !== 'checkbox') { 
+		for (i = 0; i < this.data.length; i++) {
+			var obj = this.data[i];
+			var elemSort = obj[sortBy];
+			var ar = [elemSort, obj];
 			array.push(ar);
-		} 
+		}
 		function compareNumeric(a, b)  {
 			if (!isNaN (+a[0]) && !isNaN (+b[0])) {
 				return (+a[0]) > (+b[0]) ? 1 : -1
 			} else {
 				return a[0].toString() > b[0].toString() ? 1 : -1
 			}
-		}			
+		}	
 		var arr = array.sort(compareNumeric);
 		if (this.flag == 0) {
 			var sortArray = arr;
@@ -157,8 +161,9 @@ Table.prototype._clickSort = function (tdHead) {
 			var sortArray = arr.reverse();
 			this.flag = 0;
 		} 
-		for (i = 0; i < rows.length; i++) {
-			tBody.appendChild(sortArray[i][1]);
-		} 
-	}	
+		var j = [];
+		sortArray.forEach (function (obj) { j.push(obj[1]) });
+		this.newDate(j);
+	}
 } 
+
