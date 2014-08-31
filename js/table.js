@@ -1,9 +1,8 @@
-/*
+
 function F () {};
-F.prototype = Store.prototype;
+F.prototype = Checkbox.prototype;
 Table.prototype = new F();
-*/
-var check = new Checkbox();
+
 function Table (options) {
 	var defaultOptions = this.defaultOptions;
 	for (var option in defaultOptions) {
@@ -18,6 +17,16 @@ function Table (options) {
 	this._createTable();
 	this._createThead();
 	this.createTbody();
+	
+	var str = navigator.userAgent.toLowerCase();
+    var valReg = /firefox/.exec(str)
+     
+    if (valReg !== null) {
+		this.tHead.childNodes[0].childNodes[1].className = 'mozTheadSecondTd';
+		this.tBody.className = 'mozTbody'
+	} else {
+		this.tHead.childNodes[0].childNodes[1].className = 'theadSecondTd';
+	}
 	return this
 }
 
@@ -59,11 +68,9 @@ Table.prototype._createThead = function () {
 		var tdHead = trHead.insertCell(-1);
 			tdHead.onclick = function () { self._clickSort(this) };
 		if (key == 'checkbox') {
-		//	var input = this.createChek(tdHead);
-			var input = check.createChek(tdHead);
+			var input = this.createChek(tdHead);
 			input.id = 'headBox';
-			//input.onclick = function () { self.allBox() }
-			input.onclick = function () { check.allBox() }
+			input.onclick = function () { self.allBox() }
 		} else {
 			var label = valCol.label !== undefined ? valCol['label'] : key;
 			this._createText(tdHead, label);
@@ -77,9 +84,7 @@ Table.prototype._createThead = function () {
 Table.prototype.createTbody = function () {
 	var self = this;
 	var tBody = this.tBody;
-	//tBody.innerHTML = '';
   	var data = this.data;
-	console.dir(data)
 	var columns = this.columns;
 	data.forEach(function (obj) {
 		var trBody = tBody.insertRow(-1);
@@ -87,8 +92,7 @@ Table.prototype.createTbody = function () {
 		for (var key in columns) {
 			var tdBody = trBody.insertCell(-1);
 			if (key == 'checkbox'){
-				//self.createChek(tdBody, obj['id']);
-				check.createChek(tdBody, obj['id']);
+				self.createChek(tdBody, obj['id']);
 			} else {
 				self._createText(tdBody, obj[key]);
 			} 
@@ -99,10 +103,10 @@ Table.prototype.createTbody = function () {
 	});
 }
 
-Table.prototype.newDate = function (ndata) {
+Table.prototype.newDate = function (data) {
 	var tBody = this.tBody;
 	tBody.innerHTML = '';
-	this.data = ndata
+	this.data = data
 	this.createTbody();
 }
 
@@ -124,20 +128,6 @@ Table.prototype._createText = function (teg, val) {
 	var text = document.createTextNode(val);
 	teg.appendChild(text);
 }
-
-/*
-Table.prototype.addRow = function (tr,) {
-// добавить в начало или конец
-* }
-Table.prototype.dellRow = function () {
-// удалить из начала или конца 
-}
-* 
-
-Table.prototype.sort = function () {
-// показывать только те данные, которые удовлетворяют условиям
-}
-*/
 
 Table.prototype._clickSort = function (tdHead) {
 	var tBody = this.tBody;

@@ -47,40 +47,42 @@ thead {
 	background:#D2E0EB;
 	position: fixed;
 	width: 90%;
-	top: 39px;
+	top: 40px;
 }
 
 .firstTd {
 	width: 10px
 }
+
 .secondTd {
 	width: 25px;
 }
 
-
 thead .firdTd {
 	width: 100%;
 }
-thead .secondTd {
+
+.theadSecondTd {
 	padding-right: 9px;
 }
 
 td { 
     padding: 5px;
-   /* border: 1px solid #ddd; */
-   border: 1px solid #000; 
-   }
+    border: 1px solid #ddd; 
+}
    
 tr { 
     height: 30px;
-   }
+}
 
 .click{
 	background: #cee6fa;
 }
 
-checkedBox {
-	background: #bbbbbb;
+.mozTheadSecondTd {
+	padding-right: 8px;
 }
 
-
+.mozTbody {
+	border-left: 2px solid #ddd;
+}
