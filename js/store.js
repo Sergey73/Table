@@ -43,6 +43,7 @@ Store.prototype.add = function () {
 Store.prototype.put = function (obj) {
 	var array = this.data;
 	obj.id = this._id();
+	obj.checkbox = 'false';
 	this.data.push(obj);
 	localStorage[this.key] = JSON.stringify(array);	
 

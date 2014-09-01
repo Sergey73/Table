@@ -108,7 +108,7 @@ window.onload = function () {
 		cKey && code == 49 ? search(event) : null;	// ctrl + 1
 		cKey && code == 50 ? addList(event) : null;	// ctrl + 2
 		cKey && code == 51 ? removeAll(event) : null;	// ctrl + 3
-		cKey && code == 65 ? table.allBox(event) : null;	// ctrl + A
+		cKey && code == 65 ? table.allBox(true, event) : null;	// ctrl + A
 		
 		function key( nextOrPrevious ) {
 		event.preventDefault();

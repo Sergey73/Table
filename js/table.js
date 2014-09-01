@@ -1,8 +1,3 @@
-
-function F () {};
-F.prototype = Checkbox.prototype;
-Table.prototype = new F();
-
 function Table (options) {
 	var defaultOptions = this.defaultOptions;
 	for (var option in defaultOptions) {
@@ -29,8 +24,6 @@ function Table (options) {
 	return this
 }
 
-
-
 Table.prototype.defaultOptions = {
 	data: [],
 	container: "list",
@@ -40,7 +33,6 @@ Table.prototype.defaultOptions = {
 		name: {label: 'Наименование документа'}
 	}
 };
-
 
 Table.prototype._createTable = function () {			
 	var container = document.getElementById(this.container);
@@ -69,7 +61,7 @@ Table.prototype._createThead = function () {
 		if (key == 'checkbox') {
 			var input = this.createChek(tdHead);
 			input.id = 'headBox';
-			input.onclick = function () { self.allBox() }
+			input.onclick = function () { self.allBox(input.checked, this) }
 		} else {
 			var label = valCol.label !== undefined ? valCol['label'] : key;
 			this._createText(tdHead, label);
@@ -91,7 +83,7 @@ Table.prototype.createTbody = function () {
 		for (var key in columns) {
 			var tdBody = trBody.insertCell(-1);
 			if (key == 'checkbox'){
-				self.createChek(tdBody, obj['id']);
+				self.createChek(tdBody, obj['id'], obj['checkbox']);
 			} else {
 				self._createText(tdBody, obj[key]);
 			} 
@@ -105,7 +97,7 @@ Table.prototype.createTbody = function () {
 Table.prototype.newDate = function (data) {
 	var tBody = this.tBody;
 	tBody.innerHTML = '';
-	this.data = data
+	this.data = data;
 	this.createTbody();
 }
 
@@ -117,9 +109,13 @@ Table.prototype._clickTr = function (tr, event) {
 	};
 	tr.className = 'click';
 	var checkbox = tr.getElementsByTagName('input').box;
-	if ( event.type == 'keydown' || event.target.type !== 'checkbox') { 
+	if (event.type == 'keydown' || event.target.type !== 'checkbox') { 
 		event.preventDefault();
 		checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
+	}
+	for (i = 0; i < this.data.length; i++) {
+		var obj = this.data[i];
+		obj.id == checkbox.value ? this.data[i].checkbox = checkbox.checked : null;
 	}
 	this.onOffHeadBox();
 }
@@ -166,4 +162,40 @@ Table.prototype._clickSort = function (tdHead) {
 		this.newDate(j);
 	}
 } 
+
+Table.prototype.createChek = function (td, val, checkbox) {
+	var box = document.createElement('input');
+	td.appendChild(box);
+	box.type = 'checkbox';
+	box.name = 'box';	
+	checkbox == true ? box.checked = true : null;
+	val ? box.value = val : null;		
+	return box		
+}
+
+Table.prototype.allBox = function (bool, event) {
+	if (event.type == 'keydown') { 
+		event.preventDefault();
+		var checkbox = this.tHead.getElementsByTagName('input')[0];
+		checkbox.checked = true;
+	}
+	for (i = 0; i < this.data.length; i++) {
+		this.data[i].checkbox = bool
+	}
+	this.newDate(this.data);
+}
+
+Table.prototype.onOffHeadBox = function () {
+	var headBox = this.tHead.getElementsByTagName('input')[0];
+	var data = this.data;
+	for (i = 0; i < data.length; i++) {
+		var obj = data[i];
+		if (obj.checkbox == true) {
+			headBox.checked = true;
+		} else {
+			headBox.checked = false;
+			break
+		}
+	}
+}
 
