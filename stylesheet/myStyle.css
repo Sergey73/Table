@@ -13,76 +13,74 @@ body {
 	width: 90%;
 }
 
-#myForm {
-	top: 0;
+.myForm {
+	top: -40PX;
 	position: absolute;
 	height: 30px;
 }
 
-.border {
+#listTest {
 	position: absolute;
-	border-left: 1px solid #ddd;
-	height: 30px;
-	width: inherit;
-	top: 40px;
+	top: 70px; 
+	height: 200px;
+	width: 700px;
 }
 
-#list {
+#listTest2 {
+	position: absolute;
+	top: 400px; 
+	width: 90%;
+	height: 200px;
+}
+
+
+.bodyDiv {
 	position: absolute;
 	overflow: hidden;
 	border-bottom: 1px solid #ddd;
 	border-left: 1px solid #ddd;
-	top: 70px; 
-	bottom: 30px;
-	width: inherit;
+	top: 30px; 
+	bottom: 0px;
+	width: 100%;
 	overflow-y: scroll;
 }
 
-.myTable {
+.headDiv {
+	position: absolute;
+	background:#D2E0EB;
+	width: 100%;
+	top:0px;
+}
+
+.table {
 	border-collapse: collapse;
 	width: 100%; 
+	top:0px;
 }
-
-thead {
-	background:#D2E0EB;
-	position: fixed;
-	width: 90%;
-	top: 40px;
-}
-
+  
 .firstTd {
-	width: 10px
+	width: 10px;
+	padding: 5px;
+    border: 1px solid #ddd;
 }
 
 .secondTd {
 	width: 25px;
+	padding: 5px;
+    border: 1px solid #ddd;
 }
 
-thead .firdTd {
-	width: 100%;
+.firdTd {
+	padding: 5px;
+    border: 1px solid #ddd;
 }
 
 .theadSecondTd {
 	padding-right: 9px;
 }
 
-td { 
-    padding: 5px;
-    border: 1px solid #ddd; 
-}
-   
-tr { 
-    height: 30px;
-}
+
 
 .click{
 	background: #cee6fa;
-}
-
-.mozTheadSecondTd {
-	padding-right: 8px;
-}
-
-.mozTbody {
-	border-left: 2px solid #ddd;
 }

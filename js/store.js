@@ -1,18 +1,35 @@
 function Store (options) {
+	this._funcDefaultOptions(options);
+	this._dataFunc(this.jsonData);
+	return this
+}
+
+Store.prototype.defaultOptions = {
+	jsonData: [],
+	data: [],
+	key: 'listTestKey'
+}
+
+Store.prototype._funcDefaultOptions = function (options) {
+	var self = this;
 	var defaultOptions = this.defaultOptions;
 	for (var option in defaultOptions) {
-		if (options && options[option]!==undefined) {			
-			this[option] = options[option];						
+		if (options && options[option] !==undefined) {	
+				this[option] = options[option];					
 		} else {												
-			this[option] = defaultOptions[option];				
+			this[option] = defaultOptions[option]				
 		}
 	}
 }
 
-Store.prototype.defaultOptions = {
-	data: [],
-	key: 'my_table'
-};
+Store.prototype._dataFunc = function (jsonData) {
+	var self = this;
+	if (window.localStorage[self.key]) {
+		self.add();
+	} else {
+		jsonData.forEach( function (obj) { self.put(obj) });
+	}	
+}
 
 Store.prototype.search = function (str) {
 	var array = this.data;
@@ -40,13 +57,17 @@ Store.prototype.add = function () {
 	this.data = JSON.parse(datajson);	
 }
 
+Store.prototype.removeAll = function () {
+		localStorage.removeItem(this.key);
+		location.reload();
+}
+
 Store.prototype.put = function (obj) {
 	var array = this.data;
 	obj.id = this._id();
 	obj.checkbox = 'false';
 	this.data.push(obj);
 	localStorage[this.key] = JSON.stringify(array);	
-
 }
 
 Store.prototype._id = function() {
@@ -58,3 +79,4 @@ Store.prototype._id = function() {
 	});
 	return afterId + 1;
 }
+
